@@ -30,18 +30,26 @@ osErrno*/
 int FS_Boot(char *path)
 {
     printf("FS_Boot %s\n", path);
-    
-    //Erreur lors de l'initialisation du disque
-    if (Disk_Init() == -1) {
-	   printf("Disk_Init() failed\n");
-	   osErrno = E_GENERAL;
-	   return -1;
-    }//Initialisation du disque réussi
+    //Chargement du disque
+    disk = Disk_Load(path);
+    //L'image disque n'existe pas
+    if(disk == -1){
+        printf("Disk_Load(%s) failed\n", path);
+        //Creation d'un nouveau disque et l'initialiser
+        
+        //Tentative initialisation du disque echouer
+        if (Disk_Init() == -1) {
+            printf("Disk_Init() failed\n");
+            osErrno = E_GENERAL;
+            return -1;
+        }//Disque bien initialiser 
+        else{
+            
+        }
+    }//Disque charger et utilisable
     else{
-
+        //Verification qu'il s'agit bien d'une image disque
     }
-
-    // TODO...
 
     return 0;
 }
